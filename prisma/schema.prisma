@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  STAFF
+  USER
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  email        String?    @unique
+  userName     String?    @unique @map("username")
+  profileImage String?    @map("profile_image")
+  coverImage   String?    @map("cover_image")
+  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamp(0)
+  role         UserRole   @default(USER)
+  bio          String?
+  follower     Follow[]   @relation("follower")
+  following    Follow[]   @relation("following")
+  Stories      Story[]
+  Comments     Comment[]
+  Favorites    Favorite[]
+
+  @@map("users")
+}
+
+model Follow {
+  id          Int      @id @default(autoincrement())
+  follower    User     @relation(name: "follower", fields: [followerId], references: [id])
+  followerId  Int      @map("follower_id")
+  following   User     @relation(name: "following", fields: [followingId], references: [id])
+  followingId Int      @map("following_id")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+
+  @@map("follow")
+}
+
+enum Category {
+  INSPIRE
+  ROMANTIC
+  DRAMA
+  EXPERIENCE
+  KNOWLEDGE
+  GENERAL
+  HORROR
+}
+
+model Story {
+  id           Int          @id @default(autoincrement())
+  title        String
+  content      String       @db.LongText
+  totalComment Int          @default(0) @map("total_comment") @db.UnsignedInt
+  totalFav     Int          @default(0) @map("total_fav") @db.UnsignedInt
+  coverImage   String?      @map("cover_image")
+  createdAt    DateTime     @default(now()) @map("created_at") @db.Timestamp(0)
+  staffPick    Boolean      @default(false) @map("staff_pick")
+  userId       Int          @map("user_id")
+  user         User         @relation(fields: [userId], references: [id])
+  Drafts       Draft[]
+  StoryImages  StoryImage[]
+  Comments     Comment[]
+  Favorites    Favorite[]
+
+  @@map("story")
+}
+
+model Draft {
+  id         Int      @id @default(autoincrement())
+  title      String
+  content    String   @db.LongText
+  coverImage String?  @map("cover_image")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  staffPick  Boolean  @default(false) @map("staff_pick")
+  storyId    Int      @map("story_id")
+  story      Story    @relation(fields: [storyId], references: [id])
+
+  @@map("draft")
+}
+
+model StoryImage {
+  id      Int     @id @default(autoincrement())
+  image   String?
+  storyId Int     @map("story_id")
+  story   Story   @relation(fields: [storyId], references: [id])
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  storyId   Int      @map("story_id")
+  story     Story    @relation(fields: [storyId], references: [id])
+  userId    Int      @map("user_id")
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Favorite {
+  id      Int   @id @default(autoincrement())
+  userId  Int   @map("user_id")
+  user    User  @relation(fields: [userId], references: [id])
+  storyId Int   @map("story_id")
+  story   Story @relation(fields: [storyId], references: [id])
+}
