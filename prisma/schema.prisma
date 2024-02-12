@@ -12,6 +12,11 @@ enum UserRole {
   USER
 }
 
+enum TypeUser {
+  PREMIUM
+  FREE
+}
+
 model User {
   id           Int        @id @default(autoincrement())
   email        String?    @unique
@@ -21,13 +26,22 @@ model User {
   createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamp(0)
   role         UserRole   @default(USER)
   bio          String?
+  type         TypeUser   @default(FREE)
   follower     Follow[]   @relation("follower")
   following    Follow[]   @relation("following")
   Stories      Story[]
   Comments     Comment[]
   Favorites    Favorite[]
+  Drafts       Draft[]
 
   @@map("users")
+}
+
+model Transaction {
+  id        Int      @id @default(autoincrement())
+  slipSrc   String   @map("slip_src")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  status    Boolean  @default(false)
 }
 
 model Follow {
@@ -52,20 +66,21 @@ enum Category {
 }
 
 model Story {
-  id           Int          @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   title        String
-  content      String       @db.LongText
-  totalComment Int          @default(0) @map("total_comment") @db.UnsignedInt
-  totalFav     Int          @default(0) @map("total_fav") @db.UnsignedInt
-  coverImage   String?      @map("cover_image")
-  createdAt    DateTime     @default(now()) @map("created_at") @db.Timestamp(0)
-  staffPick    Boolean      @default(false) @map("staff_pick")
-  userId       Int          @map("user_id")
-  user         User         @relation(fields: [userId], references: [id])
-  Drafts       Draft[]
-  StoryImages  StoryImage[]
-  Comments     Comment[]
-  Favorites    Favorite[]
+  content      String   @db.LongText
+  totalComment Int      @default(0) @map("total_comment") @db.UnsignedInt
+  totalFav     Int      @default(0) @map("total_fav") @db.UnsignedInt
+  coverImage   String?  @map("cover_image")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  staffPick    Boolean  @default(false) @map("staff_pick")
+  isDelete     Boolean  @default(false)
+  userId       Int      @map("user_id")
+  user         User     @relation(fields: [userId], references: [id])
+
+  StoryImages StoryImage[]
+  Comments    Comment[]
+  Favorites   Favorite[]
 
   @@map("story")
 }
@@ -76,9 +91,9 @@ model Draft {
   content    String   @db.LongText
   coverImage String?  @map("cover_image")
   createdAt  DateTime @default(now()) @map("created_at") @db.Timestamp(0)
-  staffPick  Boolean  @default(false) @map("staff_pick")
-  storyId    Int      @map("story_id")
-  story      Story    @relation(fields: [storyId], references: [id])
+  isDelete   Boolean  @default(false)
+  userId     Int      @map("user_id")
+  user       User     @relation(fields: [userId], references: [id])
 
   @@map("draft")
 }
@@ -94,6 +109,7 @@ model Comment {
   id        Int      @id @default(autoincrement())
   content   String
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  isDelete  Boolean  @default(false)
   storyId   Int      @map("story_id")
   story     Story    @relation(fields: [storyId], references: [id])
   userId    Int      @map("user_id")
