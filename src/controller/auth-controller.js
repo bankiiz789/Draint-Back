@@ -26,3 +26,29 @@ exports.register = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.login = async (req, res, next) => {
+  try {
+    const existsUser = await userService.findUserByEmailOrUsername(
+      req.body.emailOrUserName
+    );
+    if (!existsUser) {
+      createError("invalid Email or Username", 401);
+    }
+
+    const comparePass = await bcryptService.compare(
+      req.body.password,
+      existsUser.password
+    );
+
+    if (!comparePass) {
+      createError("Your password incorrect", 401);
+    }
+    const payload = { userId: existsUser.id };
+    const accessToken = jwtService.sign(payload);
+    delete existsUser.password;
+    res.status(200).json({ existsUser, accessToken });
+  } catch (err) {
+    next(err);
+  }
+};

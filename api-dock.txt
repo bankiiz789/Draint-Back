@@ -21,3 +21,22 @@ status 400 {
 status 500 {
     message             string      internal server error
 }
+
+POST /auth/login 
+REQUEST BODY
+{
+    email or username*  string      email or username
+}
+RESPONSE
+
+status 200 {
+    accessToken         string      user token
+    user                object      user object without password
+}
+
+status 400 {
+    message             string     client error massage 
+}
+status 500 {
+    message             string      internal server error
+}
