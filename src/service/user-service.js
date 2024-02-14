@@ -10,4 +10,4 @@ exports.findUserByEmailOrUsername = (emailOrUsername) => {
 };
 exports.createUser = (data) => prisma.user.create({ data });
 
-exports.findUser;
+exports.findUserById = (id) => prisma.user.findUnique({ where: { id } });

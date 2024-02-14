@@ -11,6 +11,7 @@ exports.register = async (req, res, next) => {
     );
 
     if (existsUser) {
+      // return res.status(200).json({ email: "already in use" });
       createError("username and email already in use", 401);
     }
     req.body.password = await bcryptService.hash(req.body.password);
@@ -47,8 +48,13 @@ exports.login = async (req, res, next) => {
     const payload = { userId: existsUser.id };
     const accessToken = jwtService.sign(payload);
     delete existsUser.password;
-    res.status(200).json({ existsUser, accessToken });
+    res.status(200).json({ user: existsUser, accessToken });
   } catch (err) {
     next(err);
   }
+};
+
+exports.getMe = (req, res, next) => {
+  console.log(req.user);
+  res.status(200).json({ user: req.user });
 };
