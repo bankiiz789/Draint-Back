@@ -72,6 +72,7 @@ model Story {
   content      String   @db.LongText
   totalComment Int      @default(0) @map("total_comment") @db.UnsignedInt
   totalFav     Int      @default(0) @map("total_fav") @db.UnsignedInt
+  category     Category @default(GENERAL)
   coverImage   String?  @map("cover_image")
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamp(0)
   staffPick    Boolean  @default(false) @map("staff_pick")
