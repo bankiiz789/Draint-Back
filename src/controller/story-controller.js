@@ -9,3 +9,8 @@ exports.createStory = async (req, res, next) => {
   const story = await storyService.createStory(data);
   res.status(200).json({ story });
 };
+
+exports.getAllStory = async (req, res, next) => {
+  const story = await storyService.getAllStory();
+  res.status(200).json({ story });
+};

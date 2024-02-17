@@ -6,6 +6,7 @@ const storyController = require("../controller/story-controller");
 
 const router = express.Router();
 
-router.use("/", validateCreateStory, storyController.createStory);
+router.post("/", validateCreateStory, storyController.createStory);
+router.get("/all", storyController.getAllStory);
 
 module.exports = router;
