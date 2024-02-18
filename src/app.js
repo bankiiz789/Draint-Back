@@ -20,6 +20,16 @@ app.use(express.json());
 
 app.use("/auth", authRoute);
 app.use("/story", authenticate, storyRoute);
+app.use("/user", authenticate, userRoute);
+
+app.post(
+  "/upload",
+  require("./middleware/upload").fields([
+    // single OR array OR fields
+    { name: "profileImage", maxCount: 1 },
+    { name: "coverImage", maxCount: 1 },
+  ])
+);
 
 app.use(notFound);
 app.use(error);

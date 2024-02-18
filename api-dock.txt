@@ -40,3 +40,6 @@ status 400 {
 status 500 {
     message             string      internal server error
 }
+
+POST /story
+REQUEST BODY

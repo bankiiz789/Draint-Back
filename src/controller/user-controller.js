@@ -40,6 +40,14 @@ exports.updateUser = async (req, res, next) => {
       fs.unlink(req.files.coverImage[0].path);
     }
 
+    if (req.body.userName) {
+      data.userName = req.body.userName;
+    }
+
+    if (req.body.bio) {
+      data.bio = req.body.bio;
+    }
+
     await userService.updateUserById(data, req.user.id);
     res.status(200).json(data);
   } catch (err) {

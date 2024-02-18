@@ -11,4 +11,7 @@ const userFilter = {
 exports.createStory = (data) => prisma.story.create({ data });
 
 exports.getAllStory = async () =>
-  await prisma.story.findMany({ include: { user: { select: userFilter } } });
+  await prisma.story.findMany({
+    orderBy: { createdAt: "desc" },
+    include: { user: { select: userFilter } },
+  });
