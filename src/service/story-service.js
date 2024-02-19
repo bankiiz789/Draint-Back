@@ -15,3 +15,14 @@ exports.getAllStory = async () =>
     orderBy: { createdAt: "desc" },
     include: { user: { select: userFilter } },
   });
+
+exports.getOwnStory = async (userId) => {
+  const myStory = await prisma.story.findMany({
+    where: { userId },
+  });
+  const countStory = await prisma.story.count({
+    where: { userId },
+  });
+
+  return { myStory, countStory };
+};

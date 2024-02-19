@@ -2,6 +2,7 @@ const userService = require("../service/user-service");
 const uploadService = require("../service/upload-service");
 const fs = require("fs/promises");
 const createError = require("../utils/create-error");
+const storyService = require("../service/story-service");
 
 // Check exist user
 exports.checkExistUser = async (req, res, next) => {
@@ -50,6 +51,15 @@ exports.updateUser = async (req, res, next) => {
 
     await userService.updateUserById(data, req.user.id);
     res.status(200).json(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.getOwnStory = async (req, res, next) => {
+  try {
+    const myStory = await storyService.getOwnStory(req.user.id);
+    res.status(200).json({ myStory });
   } catch (err) {
     console.log(err);
   }

@@ -13,4 +13,6 @@ router.patch(
   userController.updateUser
 );
 
+router.get("/me", userController.getOwnStory);
+
 module.exports = router;
