@@ -14,3 +14,13 @@ exports.findUserById = (id) => prisma.user.findUnique({ where: { id } });
 
 exports.updateUserById = (data, id) =>
   prisma.user.update({ data, where: { id } });
+
+exports.getUserByUserId = async (targetUserId) =>
+  await prisma.user.findMany({
+    where: { id: targetUserId },
+    include: { Stories: { orderBy: { createdAt: "desc" } } },
+  });
+
+// exports.premiumUser = async (userId, upgrade) => {
+//   await prisma.user.update({ where: { id: userId }, data: { type: upgrade } });
+// };

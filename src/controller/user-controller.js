@@ -64,3 +64,16 @@ exports.getOwnStory = async (req, res, next) => {
     console.log(err);
   }
 };
+
+exports.getUserByTargetUserId = async (req, res, next) => {
+  try {
+    const userProfileFriend = await userService.getUserByUserId(
+      req.targetUser.id
+    );
+
+    console.log(req.targetUser);
+    res.status(200).json({ userProfileFriend });
+  } catch (err) {
+    console.log(err);
+  }
+};
