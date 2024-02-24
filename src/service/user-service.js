@@ -8,6 +8,7 @@ exports.findUserByEmailOrUsername = (emailOrUsername) => {
     },
   });
 };
+
 exports.createUser = (data) => prisma.user.create({ data });
 
 exports.findUserById = (id) =>
@@ -33,3 +34,6 @@ exports.getMeMyMine = async (id) => prisma.user.findUnique({});
 // exports.premiumUser = async (userId, upgrade) => {
 //   await prisma.user.update({ where: { id: userId }, data: { type: upgrade } });
 // };
+
+exports.checkDuplicate = async (userName) =>
+  prisma.user.findFirst({ where: { userName: userName } });

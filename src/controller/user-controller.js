@@ -86,3 +86,13 @@ exports.getMyMeMine = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.checkDuplicateName = async (req, res, next) => {
+  try {
+    const user = await userService.checkDuplicate(req.body.userName);
+    delete user.password;
+    res.status(200).json({ user });
+  } catch (err) {
+    next(err);
+  }
+};

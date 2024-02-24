@@ -14,6 +14,14 @@ router.post(
   draftController.createDraft
 );
 
+router.patch(
+  "/update",
+  upload.fields([{ name: "coverImage" }]),
+  draftController.updateDraft
+);
+
+router.delete("/delete/:draftId", draftController.deleteDraft);
+
 router.get("/me", draftController.getOwnDraftByUserId);
 
 router.get("/:draftId", draftController.getTargetDraftByDraftId);

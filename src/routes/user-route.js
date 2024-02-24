@@ -35,4 +35,6 @@ router.delete("/follow/:followingId", followController.deleteFollow);
 
 router.get("/memymine", userController.getMyMeMine);
 
+router.get("/check", userController.checkDuplicateName);
+
 module.exports = router;
