@@ -18,7 +18,9 @@ router.get("/all", storyController.getAllStory);
 
 router.delete("/delete/:storyId", storyController.deleteStory);
 
-router.post("/:storyId/fav", favoriteController.toggleFav);
+//favorite
+router.post("/:storyId/fav", favoriteController.createFav);
+router.delete("/:storyId/fav", favoriteController.deleteFav);
 
 router.get("/:storyId", storyController.getStoryByStoryId);
 

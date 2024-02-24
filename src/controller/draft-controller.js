@@ -1,5 +1,6 @@
 const draftService = require("../service/draft-service");
 const uploadService = require("../service/upload-service");
+const fs = require("fs/promises");
 
 exports.createDraft = async (req, res, next) => {
   const data = {

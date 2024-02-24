@@ -73,5 +73,3 @@ exports.updateStory = (storyId, data) =>
     where: { id: storyId },
     data,
   });
-
-exports.createDraft = (data) => prisma.draft.create({ data });

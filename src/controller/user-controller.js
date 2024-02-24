@@ -77,3 +77,12 @@ exports.getUserByTargetUserId = async (req, res, next) => {
     console.log(err);
   }
 };
+
+exports.getMyMeMine = async (req, res, next) => {
+  try {
+    const me = await userService.findUserById(req.user.id);
+    res.status(200).json(me);
+  } catch (err) {
+    next(err);
+  }
+};

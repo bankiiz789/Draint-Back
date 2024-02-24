@@ -31,5 +31,8 @@ router.post(
 );
 
 router.post("/follow/:targetUserId", followController.createFollow);
+router.delete("/follow/:followingId", followController.deleteFollow);
+
+router.get("/memymine", userController.getMyMeMine);
 
 module.exports = router;

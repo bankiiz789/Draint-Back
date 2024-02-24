@@ -10,7 +10,11 @@ exports.findUserByEmailOrUsername = (emailOrUsername) => {
 };
 exports.createUser = (data) => prisma.user.create({ data });
 
-exports.findUserById = (id) => prisma.user.findUnique({ where: { id } });
+exports.findUserById = (id) =>
+  prisma.user.findUnique({
+    where: { id },
+    include: { follower: true, following: true },
+  });
 
 exports.updateUserById = (data, id) =>
   prisma.user.update({ data, where: { id } });
@@ -18,9 +22,14 @@ exports.updateUserById = (data, id) =>
 exports.getUserByUserId = async (targetUserId) =>
   await prisma.user.findMany({
     where: { id: targetUserId },
-    include: { Stories: { orderBy: { createdAt: "desc" } } },
+    include: {
+      Stories: { orderBy: { createdAt: "desc" } },
+      follower: true,
+      following: true,
+    },
   });
 
+exports.getMeMyMine = async (id) => prisma.user.findUnique({});
 // exports.premiumUser = async (userId, upgrade) => {
 //   await prisma.user.update({ where: { id: userId }, data: { type: upgrade } });
 // };

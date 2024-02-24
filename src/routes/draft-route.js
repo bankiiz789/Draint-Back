@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post(
   "/",
-  upload.single("coverImage"),
+  upload.fields([{ name: "coverImage" }]),
   validateCreateStory,
   draftController.createDraft
 );
