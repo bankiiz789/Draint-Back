@@ -16,7 +16,7 @@ exports.upgradeAccount = async (req, res, next) => {
     const upgrade = await upgradeAccountService.upgradeAccount(data);
 
     const update = {
-      type: "PREMIUM",
+      type: "PENDING",
     };
 
     await userService.updateUserById(update, req.user.id);
