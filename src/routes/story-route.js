@@ -26,7 +26,7 @@ router.get("/:storyId", storyController.getStoryByStoryId);
 
 router.patch(
   "/update",
-  upload.single("coverImage"),
+  upload.fields([{ name: "coverImage" }]),
   storyController.updateStory
 );
 
